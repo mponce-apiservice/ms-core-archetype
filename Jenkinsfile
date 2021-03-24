@@ -186,68 +186,73 @@ spec:
                 }
             }
         }
-        stage('Stage: ECR') {
-	        steps {
-	            container('tools') {
-	                script {
-	                	sh label: "",
-	                    script: """
-	                        #!/bin/bash
-	                        
-	                        echo " --> Login al Registry..."
-	                        aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}
-							aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
-							aws configure set default.region ${AWS_REGION}
-							aws configure set default.output json
-							
-							aws ecr get-login
-	
-	                    """
-	                }
-	            }
-	        }
-        }
-        stage('Stage: Package') { 
-            agent { 
-                label "${jenkinsWorker}"
-            }
-            steps {
-                script {
-                    echo "Maven build..."
-                    sh "\\cp infrastructure/src/main/resources/META-INF/microprofile-config-dev.properties infrastructure/src/main/resources/META-INF/microprofile-config.properties"
-                    sh "mvn clean package -Dmaven.test.skip=true -Dmaven.test.failure.ignore=true"
-                    
-                    echo "Docker Build..."
-                    sh "cd application && docker build -f src/main/docker/Dockerfile.jvm -t ${IMAGEN}:${APP_VERSION} ."
-                    
-                    echo "Docker Tag..."
-                    sh "docker tag ${IMAGEN}:${APP_VERSION} ${PUSH}:${APP_VERSION}"
-
-                    echo "Docker Push..."
-                    // Credentials
-                    withCredentials([usernamePassword(credentialsId: 'openshift-login', usernameVariable: 'USER_OPENSHIFT', passwordVariable: 'PASS_OPENSHIFT')]) {
-                        sh label: "",
-                            script: """
-                                #!/bin/bash
-
-                                set +xe
-                                
-                                echo " --> Login al Cluster..."
-                                oc login -u \$USER_OPENSHIFT -p \$PASS_OPENSHIFT ${URL_OPENSHIFT}
-
-                                PASS=\$( oc get secrets/aws-registry -o=go-template='{{index .data ".dockerconfigjson"}}' | base64 -d | jq -r ".[] | .[] | .password" )
-                                
-                                echo " --> Login al Registry..."
-                                echo \$PASS | docker login --username AWS --password-stdin https://${REGISTRY}
-
-                            """
-                    }
-
-                    sh "docker push ${PUSH}:${APP_VERSION}"
-
-                }
-            }
-        }
+        stage('Stage: Package'){
+            stages {
+		        stage('Stage: ECR Token') {
+			        steps {
+			            container('tools') {
+			                script {
+			                
+			                    sh label: "",
+			                    script: """
+			                        #!/bin/bash
+			                        
+			                        echo " --> Login al Registry..."
+			                        aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}
+									aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
+									aws configure set default.region ${AWS_REGION}
+									aws configure set default.output json
+			
+			                    """
+			                    env.LOGIN = sh(script:'aws ecr get-login', returnStdout: true).trim()
+			                    
+			                }
+			            }
+			        }
+		        }
+		        stage('Stage: ECR Push') { 
+		            agent { 
+		                label "${jenkinsWorker}"
+		            }
+		            steps {
+		                script {
+		                    echo "Maven build..."
+		                    sh "\\cp infrastructure/src/main/resources/META-INF/microprofile-config-dev.properties infrastructure/src/main/resources/META-INF/microprofile-config.properties"
+		                    sh "mvn clean package -Dmaven.test.skip=true -Dmaven.test.failure.ignore=true"
+		                    
+		                    echo "Docker Build..."
+		                    sh "cd application && docker build -f src/main/docker/Dockerfile.jvm -t ${IMAGEN}:${APP_VERSION} ."
+		                    
+		                    echo "Docker Tag..."
+		                    sh "docker tag ${IMAGEN}:${APP_VERSION} ${PUSH}:${APP_VERSION}"
+		
+		                    echo "Docker Push..."
+		                    // Credentials
+		                    /*withCredentials([usernamePassword(credentialsId: 'openshift-login', usernameVariable: 'USER_OPENSHIFT', passwordVariable: 'PASS_OPENSHIFT')]) {
+		                        sh label: "",
+		                            script: """
+		                                #!/bin/bash
+		
+		                                set +xe
+		                                
+		                                echo " --> Login al Cluster..."
+		                                oc login -u \$USER_OPENSHIFT -p \$PASS_OPENSHIFT ${URL_OPENSHIFT}
+		
+		                                PASS=\$( oc get secrets/aws-registry -o=go-template='{{index .data ".dockerconfigjson"}}' | base64 -d | jq -r ".[] | .[] | .password" )
+		                                
+		                                echo " --> Login al Registry..."
+		                                echo \$PASS | docker login --username AWS --password-stdin https://${REGISTRY}
+		
+		                            """
+		                    }*/
+							sh "${env.LOGIN}"
+		                    sh "docker push ${PUSH}:${APP_VERSION}"
+		
+		                }
+		            }
+		        }
+			}
+		}
         stage('Stage: Validate') {
             stages {
                 stage("Container Scanner") {
