@@ -324,6 +324,7 @@ spec:
                                 echo " --> Validando el status del Deployment"
                                 if (openshift.selector("dc", "${APP_NAME}-${AMBIENTE}").exists()){
                                     def latestDeploymentVersion = openshift.selector('dc',"${APP_NAME}-${AMBIENTE}").object().status.latestVersion
+                                    sh "echo ${latestDeploymentVersion}"
                                     def rc = openshift.selector('rc', "${APP_NAME}-${AMBIENTE}-${latestDeploymentVersion}")
                                     rc.untilEach(1){
                                         def rcMap = it.object()
@@ -334,6 +335,7 @@ spec:
                                     def status = dc.rollout().status()
                 
                                     // Validando el Service 
+                                    sh "echo Validando el Service"
                                     def connected = openshift.verifyService("${APP_NAME}-${AMBIENTE}")
                                     if (connected) {
                                         echo "Able to connect to ${APP_NAME}-${AMBIENTE}"
