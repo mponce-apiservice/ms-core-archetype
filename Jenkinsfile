@@ -285,7 +285,9 @@ spec:
                         openshift.withCluster() {
                             openshift.withProject("${NAMESPACE}") {
                             
-                            	sh "oc delete secret ecr-registry"
+                                if (openshift.selector("secrets", "ecr-registry").exists()){
+                            		sh "oc delete secret ecr-registry"
+                            	}
                             	sh "oc secrets new-dockercfg ecr-registry --docker-server=${REGISTRY} --docker-username=AWS --docker-password=${env.LOGIN_DOCKER}"
                             	
                                 /*sh label: "",
