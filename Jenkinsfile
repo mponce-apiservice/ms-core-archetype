@@ -204,7 +204,7 @@ spec:
 									aws configure set default.output json
 			
 			                    """
-			                    env.LOGIN = sh(script:'aws ecr get-login', returnStdout: true).trim()
+			                    env.LOGIN = sh(script:'aws ecr get-login --no-include-email', returnStdout: true).trim()
 			                    
 			                }
 			            }
@@ -221,6 +221,7 @@ spec:
 		                    sh "mvn clean package -Dmaven.test.skip=true -Dmaven.test.failure.ignore=true"
 		                    
 		                    echo "Docker Build..."
+		                    sh "docker version"
 		                    sh "cd application && docker build -f src/main/docker/Dockerfile.jvm -t ${IMAGEN}:${APP_VERSION} ."
 		                    
 		                    echo "Docker Tag..."
