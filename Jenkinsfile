@@ -123,8 +123,7 @@ spec:
                     
                         echo "environment version"
                         def version = readMavenPom().getVersion()
-                    	//APP_VERSION = "${version}-${branch}"
-                    	APP_VERSION = readMavenPom().getVersion()
+                    	APP_VERSION = "${version}-${branch}"
                         echo "Version : ${APP_VERSION}"
                         
                     }else{
