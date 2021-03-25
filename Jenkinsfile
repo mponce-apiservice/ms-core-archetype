@@ -412,7 +412,7 @@ spec:
                 }
             }
         }
-        /*stage('Stage: Release') {
+        stage('Stage: Release') {
             agent { 
                 label "${jenkinsWorker}"
             }
@@ -503,7 +503,7 @@ spec:
                     }
                 }
             }
-        }*/
+        }
     }
     post {
         success {
