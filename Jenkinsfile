@@ -206,7 +206,7 @@ spec:
 			                    """
 			                    env.LOGIN_DOCKER = sh(script:'aws ecr get-login --no-include-email', returnStdout: true).trim()
 			                    
-			                    sh "echo ${env.LOGIN_DOCKER} | awk '{print $6}'"
+			                    sh "echo ${env.LOGIN_DOCKER}"
 			                    
 			                }
 			            }
