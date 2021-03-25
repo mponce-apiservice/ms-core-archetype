@@ -270,10 +270,10 @@ spec:
                                     
                                     # KLAR_TRACE=true
                                 
-                                    PASS=\$( oc get secrets/aws-registry -o=go-template='{{index .data ".dockerconfigjson"}}' | base64 -d | jq -r ".[] | .[] | .password" )
+                                    //PASS=\$( oc get secrets/aws-registry -o=go-template='{{index .data ".dockerconfigjson"}}' | base64 -d | jq -r ".[] | .[] | .password" )
 									
                                 	echo " --> Scanning image ${IMAGEN}:${APP_VERSION}..."
-                                	SCAN=\$( CLAIR_ADDR=http://\$(oc get svc -l app=clair | awk '{print \$1}' | tail -1):6060 DOCKER_USER=AWS DOCKER_PASSWORD=\$PASS JSON_OUTPUT=true klar ${PUSH}:${APP_VERSION} )
+                                	SCAN=\$( CLAIR_ADDR=http://\$(oc get svc -l app=clair | awk '{print \$1}' | tail -1):6060 DOCKER_USER=AWS DOCKER_PASSWORD=\${env.LOGIN_DOCKER} JSON_OUTPUT=true klar ${PUSH}:${APP_VERSION} )
                                     
                                     echo " --> Resultado del Scan: \$SCAN"
 
