@@ -101,7 +101,7 @@ spec:
                 }
             }
         }
-        stage('Stage: Build'){
+        /*stage('Stage: Build'){
             agent { 
                 label "${jenkinsWorker}"
             }
@@ -272,7 +272,7 @@ spec:
                     }
                 }
             }
-        }
+        }*/
         stage('Stage: Deployment') {
             when { 
                 not { 
@@ -284,6 +284,20 @@ spec:
                     script {
                         openshift.withCluster() {
                             openshift.withProject("${NAMESPACE}") {
+                            
+                            	sh "oc delete secret ecr-registry"
+                            	sh "oc secrets new-dockercfg ecr-registry --docker-server=${REGISTRY} --docker-username=AWS --docker-password=${env.LOGIN_DOCKER}"
+                            	
+                                /*sh label: "",
+	                            script: """
+	                                #!/bin/bash
+	
+	                                cat << 'EOF' > openshift/.dockercfg
+									{"${REGISTRY}":{"username":"AWS","password":"${env.LOGIN_DOCKER}"}}
+									EOF
+	
+	                            """*/
+	                            
                                 // Validando
                                 if (!openshift.selector("dc", "${APP_NAME}-${AMBIENTE}").exists()){
                                     
