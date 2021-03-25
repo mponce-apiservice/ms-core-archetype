@@ -221,14 +221,13 @@ spec:
 		                    sh "mvn clean package -Dmaven.test.skip=true -Dmaven.test.failure.ignore=true"
 		                    
 		                    echo "Docker Build..."
-		                    sh "docker version"
 		                    sh "cd application && docker build -f src/main/docker/Dockerfile.jvm -t ${IMAGEN}:${APP_VERSION} ."
 		                    
 		                    echo "Docker Tag..."
 		                    sh "docker tag ${IMAGEN}:${APP_VERSION} ${PUSH}:${APP_VERSION}"
 		
 		                    echo "Docker Push..."
-							sh "echo ${env.LOGIN_DOCKER} | docker login --username AWS --password-stdin https://${REGISTRY}"
+							sh "${env.LOGIN_DOCKER} | docker login --username AWS --password-stdin https://${REGISTRY}"
 		                    sh "docker push ${PUSH}:${APP_VERSION}"
 		
 		                }
@@ -251,7 +250,7 @@ spec:
                                     
                                     # KLAR_TRACE=true
                                 
-                                	echo " --> Scanning image ${IMAGEN}:${APP_VERSION}..."
+                                	echo " --> Scanning image ${PUSH}:${APP_VERSION}..."
                                 	SCAN=\$( CLAIR_ADDR=http://\$(oc get svc -l app=clair | awk '{print \$1}' | tail -1):6060 DOCKER_USER=AWS DOCKER_PASSWORD=${env.LOGIN_DOCKER} JSON_OUTPUT=true klar ${PUSH}:${APP_VERSION} )
                                     
                                     echo " --> Resultado del Scan: \$SCAN"
@@ -301,10 +300,6 @@ spec:
                                 }
                                 else {
                                     echo " --> Ya existe el Deployment $APP_NAME-${AMBIENTE}!"
-
-                                    //echo " --> Updating image version..."
-                                    //openshift.set("image", "dc/${APP_NAME}-${AMBIENTE}", "${APP_NAME}-${AMBIENTE}=${PUSH}:${APP_VERSION}", "--record")
-                                    
                                     echo " --> Updating Deployment..."
                                     sh "oc process -f ./openshift/template.yaml -p APP_NAME=${APP_NAME}-${AMBIENTE} -p APP_VERSION=${APP_VERSION} -p AMBIENTE=${AMBIENTE} -p REGISTRY=${PUSH}:${APP_VERSION} | oc apply -f -"
                                 }
