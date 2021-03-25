@@ -51,7 +51,7 @@ spec:
                     IMAGEN = readMavenPom().getArtifactId()
                     echo "Nombre del Artefacto Docker: ${IMAGEN}"
                     
-                    REPOSITORY = "${REPOSITORY}/${artifact}"
+                    //REPOSITORY = "${REPOSITORY}/${artifact}"
                     echo "Nombre del Repositorio ECR: ${REPOSITORY}"
                     
                     PUSH = "${REGISTRY}/${REPOSITORY}"
