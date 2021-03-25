@@ -101,7 +101,7 @@ spec:
                 }
             }
         }
-        stage('Stage: Build'){
+        /*stage('Stage: Build'){
             agent { 
                 label "${jenkinsWorker}"
             }
@@ -185,7 +185,7 @@ spec:
                     }
                 }
             }
-        }
+        }*/
         stage('Stage: Package'){
             stages {
 		        stage('Stage: ECR Token') {
@@ -205,6 +205,8 @@ spec:
 			
 			                    """
 			                    env.LOGIN_DOCKER = sh(script:'aws ecr get-login --no-include-email | grep eyJ', returnStdout: true).trim()
+			                    
+			                    sh "echo ${env.LOGIN_DOCKER}"
 			                    
 			                }
 			            }
