@@ -204,7 +204,7 @@ spec:
 									aws configure set default.output json
 			
 			                    """
-			                    env.LOGIN_DOCKER = sh(script:"aws ecr get-login --no-include-email | awk '{printf $6}'", returnStdout: true).trim()
+			                    env.LOGIN_DOCKER = sh(script:'aws ecr get-login --no-include-email | awk "{printf $6}"', returnStdout: true).trim()
 			                    
 			                    sh "echo ${env.LOGIN_DOCKER}"
 			                    
