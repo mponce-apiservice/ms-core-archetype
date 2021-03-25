@@ -227,7 +227,7 @@ spec:
 		                    sh "docker tag ${IMAGEN}:${APP_VERSION} ${PUSH}:${APP_VERSION}"
 		
 		                    echo "Docker Push..."
-							sh "${env.LOGIN_DOCKER} | docker login --username AWS --password-stdin https://${REGISTRY}"
+							sh "echo ${env.LOGIN_DOCKER} | docker login --username AWS --password-stdin https://${REGISTRY}"
 		                    sh "docker push ${PUSH}:${APP_VERSION}"
 		
 		                }
