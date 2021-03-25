@@ -204,9 +204,9 @@ spec:
 									aws configure set default.output json
 			
 			                    """
-			                    env.LOGIN_DOCKER = sh(script:'aws ecr get-login --no-include-email | awk "{printf $6}"', returnStdout: true).trim()
+			                    env.LOGIN_DOCKER = sh(script:'aws ecr get-login --no-include-email', returnStdout: true).trim()
 			                    
-			                    sh "echo ${env.LOGIN_DOCKER}"
+			                    sh "echo ${env.LOGIN_DOCKER} | awk '{print $6}'"
 			                    
 			                }
 			            }
@@ -249,7 +249,7 @@ spec:
 		                            """
 		                    }*/
 							//sh "${env.LOGIN}"
-							sh "echo \${env.LOGIN_DOCKER} | docker login --username AWS --password-stdin https://${REGISTRY}"
+							sh "echo \${env.LOGIN_DOCKER} | awk '{print $6}' | docker login --username AWS --password-stdin https://${REGISTRY}"
 		                    sh "docker push ${PUSH}:${APP_VERSION}"
 		
 		                }
