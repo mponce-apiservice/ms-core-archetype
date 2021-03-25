@@ -101,7 +101,7 @@ spec:
                 }
             }
         }
-        /*stage('Stage: Build'){
+        stage('Stage: Build'){
             agent { 
                 label "${jenkinsWorker}"
             }
@@ -185,7 +185,7 @@ spec:
                     }
                 }
             }
-        }*/
+        }
         stage('Stage: Package'){
             stages {
 		        stage('Stage: ECR Token') {
@@ -205,8 +205,6 @@ spec:
 			
 			                    """
 			                    env.LOGIN_DOCKER = sh(script:"aws ecr get-login --no-include-email | awk '{print \$6}'", returnStdout: true).trim()
-			                    
-			                    sh "echo ${env.LOGIN_DOCKER}"
 			                    
 			                }
 			            }
@@ -230,25 +228,6 @@ spec:
 		                    sh "docker tag ${IMAGEN}:${APP_VERSION} ${PUSH}:${APP_VERSION}"
 		
 		                    echo "Docker Push..."
-		                    // Credentials
-		                    /*withCredentials([usernamePassword(credentialsId: 'openshift-login', usernameVariable: 'USER_OPENSHIFT', passwordVariable: 'PASS_OPENSHIFT')]) {
-		                        sh label: "",
-		                            script: """
-		                                #!/bin/bash
-		
-		                                set +xe
-		                                
-		                                echo " --> Login al Cluster..."
-		                                oc login -u \$USER_OPENSHIFT -p \$PASS_OPENSHIFT ${URL_OPENSHIFT}
-		
-		                                PASS=\$( oc get secrets/aws-registry -o=go-template='{{index .data ".dockerconfigjson"}}' | base64 -d | jq -r ".[] | .[] | .password" )
-		                                
-		                                echo " --> Login al Registry..."
-		                                echo \$PASS | docker login --username AWS --password-stdin https://${REGISTRY}
-		
-		                            """
-		                    }*/
-							//sh "${env.LOGIN}"
 							sh "echo ${env.LOGIN_DOCKER} | docker login --username AWS --password-stdin https://${REGISTRY}"
 		                    sh "docker push ${PUSH}:${APP_VERSION}"
 		
@@ -272,10 +251,8 @@ spec:
                                     
                                     # KLAR_TRACE=true
                                 
-                                    //PASS=\$( oc get secrets/aws-registry -o=go-template='{{index .data ".dockerconfigjson"}}' | base64 -d | jq -r ".[] | .[] | .password" )
-									
                                 	echo " --> Scanning image ${IMAGEN}:${APP_VERSION}..."
-                                	SCAN=\$( CLAIR_ADDR=http://\$(oc get svc -l app=clair | awk '{print \$1}' | tail -1):6060 DOCKER_USER=AWS DOCKER_PASSWORD=\${env.LOGIN_DOCKER} JSON_OUTPUT=true klar ${PUSH}:${APP_VERSION} )
+                                	SCAN=\$( CLAIR_ADDR=http://\$(oc get svc -l app=clair | awk '{print \$1}' | tail -1):6060 DOCKER_USER=AWS DOCKER_PASSWORD=${env.LOGIN_DOCKER} JSON_OUTPUT=true klar ${PUSH}:${APP_VERSION} )
                                     
                                     echo " --> Resultado del Scan: \$SCAN"
 
