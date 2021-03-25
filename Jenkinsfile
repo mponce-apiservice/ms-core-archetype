@@ -249,7 +249,7 @@ spec:
 		                            """
 		                    }*/
 							//sh "${env.LOGIN}"
-							sh "echo \${env.LOGIN_DOCKER} | docker login --username AWS --password-stdin https://${REGISTRY}"
+							sh "echo ${env.LOGIN_DOCKER} | docker login --username AWS --password-stdin https://${REGISTRY}"
 		                    sh "docker push ${PUSH}:${APP_VERSION}"
 		
 		                }
