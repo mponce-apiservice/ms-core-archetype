@@ -299,7 +299,7 @@ spec:
 									EOF
 	
 	                            """
-	                            sh "oc secrets new ecr-registry .dockercfg=./openshift/.dockercfg"
+	                            sh "oc create secret generic ecr-registry --from-file=.dockercfg=openshift/.dockercfg --type=kubernetes.io/dockercfg"
 	                            
                                 // Validando
                                 if (!openshift.selector("dc", "${APP_NAME}-${AMBIENTE}").exists()){
