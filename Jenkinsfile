@@ -101,7 +101,7 @@ spec:
                 }
             }
         }
-        /*stage('Stage: Build'){
+        stage('Stage: Build'){
             agent { 
                 label "${jenkinsWorker}"
             }
@@ -272,7 +272,7 @@ spec:
                     }
                 }
             }
-        }*/
+        }
         stage('Stage: Deployment') {
             when { 
                 not { 
@@ -285,11 +285,6 @@ spec:
                         openshift.withCluster() {
                             openshift.withProject("${NAMESPACE}") {
                             
-                                if (openshift.selector("secrets", "ecr-registry").exists()){
-                            		sh "oc delete secret ecr-registry"
-                            	}
-                            	//sh "oc secrets new-dockercfg ecr-registry --docker-server=${REGISTRY} --docker-username=AWS --docker-password=${env.LOGIN_DOCKER}"
-                            	
                                 sh label: "",
 	                            script: """
 	                                #!/bin/bash
@@ -300,8 +295,12 @@ EOF
 	
 	                            """
 								
-	                            sh "cat openshift/.dockercfg"
-	                            sh "oc create secret generic ecr-registry --from-file=.dockercfg=openshift/.dockercfg --type=kubernetes.io/dockercfg"
+	                            if (openshift.selector("secrets", "ecr-registry").exists()){
+                            		sh "oc set data secret/ecr-registry -from-file=.dockercfg=openshift/.dockercfg"
+                            	}else{
+	                            	sh "oc create secret generic ecr-registry --from-file=.dockercfg=openshift/.dockercfg --type=kubernetes.io/dockercfg"
+	                            	sh "oc secrets link default ecr-registry --for=pull"
+	                            }
 	                            
                                 // Validando
                                 if (!openshift.selector("dc", "${APP_NAME}-${AMBIENTE}").exists()){
