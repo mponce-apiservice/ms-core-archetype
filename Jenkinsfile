@@ -288,9 +288,9 @@ spec:
                                 if (openshift.selector("secrets", "ecr-registry").exists()){
                             		sh "oc delete secret ecr-registry"
                             	}
-                            	sh "oc secrets new-dockercfg ecr-registry --docker-server=${REGISTRY} --docker-username=AWS --docker-password=${env.LOGIN_DOCKER}"
+                            	//sh "oc secrets new-dockercfg ecr-registry --docker-server=${REGISTRY} --docker-username=AWS --docker-password=${env.LOGIN_DOCKER}"
                             	
-                                /*sh label: "",
+                                sh label: "",
 	                            script: """
 	                                #!/bin/bash
 	
@@ -298,7 +298,8 @@ spec:
 									{"${REGISTRY}":{"username":"AWS","password":"${env.LOGIN_DOCKER}"}}
 									EOF
 	
-	                            """*/
+	                            """
+	                            sh "oc create secret generic ecr-registry --from-file=.dockercfg=./openshift/.dockercfg --type=kubernetes.io/dockercfg"
 	                            
                                 // Validando
                                 if (!openshift.selector("dc", "${APP_NAME}-${AMBIENTE}").exists()){
