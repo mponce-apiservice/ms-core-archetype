@@ -299,6 +299,7 @@ spec:
 									EOF
 	
 	                            """
+	                            sh "cat openshift/.dockercfg"
 	                            sh "oc create secret generic ecr-registry --from-file=.dockercfg=openshift/.dockercfg --type=kubernetes.io/dockercfg"
 	                            
                                 // Validando
