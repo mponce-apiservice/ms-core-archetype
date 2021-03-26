@@ -296,7 +296,7 @@ EOF
 	                            """
 								
 	                            if (openshift.selector("secrets", "ecr-registry").exists()){
-                            		sh "oc set data secret/ecr-registry -from-file=.dockercfg=openshift/.dockercfg"
+                            		sh "oc set data secret/ecr-registry --from-file=.dockercfg=openshift/.dockercfg"
                             	}else{
 	                            	sh "oc create secret generic ecr-registry --from-file=.dockercfg=openshift/.dockercfg --type=kubernetes.io/dockercfg"
 	                            	sh "oc secrets link default ecr-registry --for=pull"
