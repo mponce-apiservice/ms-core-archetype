@@ -290,17 +290,15 @@ spec:
                             	}
                             	//sh "oc secrets new-dockercfg ecr-registry --docker-server=${REGISTRY} --docker-username=AWS --docker-password=${env.LOGIN_DOCKER}"
                             	
-                                /*sh label: "",
+                                sh label: "",
 	                            script: """
 	                                #!/bin/bash
+	                                
+	                                cat << EOF > openshift/.dockercfg
+{"$REGISTRY":{"username":"AWS","password":"$env.LOGIN_DOCKER"}}
+EOF
 	
-	                                cat > openshift/.dockercfg << "EOF"
-									{"${REGISTRY}":{"username":"AWS","password":"${env.LOGIN_DOCKER}"}}
-									EOF
-	
-	                            """*/
-	                            def json= '{"${REGISTRY}":{"username":"AWS","password":"${env.LOGIN_DOCKER}"}}'
-								sh "echo $json > openshift/.dockercfg"
+	                            """
 								
 	                            sh "cat openshift/.dockercfg"
 	                            sh "oc create secret generic ecr-registry --from-file=.dockercfg=openshift/.dockercfg --type=kubernetes.io/dockercfg"
