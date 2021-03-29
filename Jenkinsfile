@@ -222,7 +222,8 @@ spec:
 		                    sh "mvn clean package -Dmaven.test.skip=true -Dmaven.test.failure.ignore=true"
 		                    
 		                    echo "Docker Build..."
-		                    sh "cd application && docker build -f src/main/docker/Dockerfile.jvm -t ${IMAGEN}:${APP_VERSION} ."
+		                    //sh "cd application && docker build -f src/main/docker/Dockerfile.jvm -t ${IMAGEN}:${APP_VERSION} ."
+		                    sh "cd application && docker build -f src/main/docker/Dockerfile.native -t ${IMAGEN}:${APP_VERSION} ."
 		                    
 		                    echo "Docker Tag..."
 		                    sh "docker tag ${IMAGEN}:${APP_VERSION} ${PUSH}:${APP_VERSION}"
