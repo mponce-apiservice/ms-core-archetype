@@ -172,17 +172,17 @@ spec:
                 }
                 stage('Kiuwan Test'){
                     steps {
-                        //container('kiuwan') {
-                            script {
-                                echo " --> Kiuwan Scan"
-                                kiuwan connectionProfileUuid: 'eh9q-SJTq',
-                                sourcePath: '/',
-                                applicationName: "${APP_NAME}",
-                                indicateLanguages: true,
-                                languages:'java',
-                                measure: 'NONE'
-                            }
-                        //}
+                        container('kiuwan') {
+	                        script {
+	                            echo " --> Kiuwan Scan"
+	                            kiuwan connectionProfileUuid: 'eh9q-SJTq',
+	                            sourcePath: '/',
+	                            applicationName: "${APP_NAME}",
+	                            indicateLanguages: true,
+	                            languages:'java',
+	                            measure: 'NONE'
+	                        }
+                        }
                     }
                 }
             }
