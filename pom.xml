@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>ec.com.dinersclub.dddmodules</groupId>
   <artifactId>ms-ddd-archetype</artifactId>
-  <version>1.0.39</version>
+  <version>1.0.40</version>
   <name>ms-ddd-archetype</name>
   <description>DDD Bounded Contexts and Java Modules</description>
   <packaging>pom</packaging>
