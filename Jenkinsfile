@@ -170,20 +170,42 @@ spec:
                         }
                     }
                 }
-                stage('Kiuwan Test'){
+                /*stage('Kiuwan Test'){
                     steps {
-                        //container('kiuwan') {
-                            script {
-                                echo " --> Kiuwan Scan"
-                                kiuwan connectionProfileUuid: 'eh9q-SJTq',
-                                sourcePath: '/',
-                                applicationName: "${APP_NAME}",
-                                indicateLanguages: true,
-                                languages:'java',
-                                measure: 'NONE'
-                            }
-                        //}
+                        script {
+                            echo " --> Kiuwan Scan"
+                            kiuwan connectionProfileUuid: 'eh9q-SJTq',
+                            sourcePath: '/',
+                            applicationName: "${APP_NAME}",
+                            indicateLanguages: true,
+                            languages:'java',
+                            measure: 'NONE'
+                            
+                            def kiuwanOutput = readJSON file: "${env.WORKSPACE}/kiuwan/output.json"
+							def secRating = kiuwanOutput.Security.Rating
+                        }
                     }
+                }*/
+            }
+        }
+        stage('Stage: Kiuwan Test'){
+            when { 
+                not { 
+                    branch 'master' 
+                }
+            }
+            steps {
+                script {
+                    echo " --> Kiuwan Scan"
+                    kiuwan connectionProfileUuid: 'eh9q-SJTq',
+                    sourcePath: '/',
+                    applicationName: "${APP_NAME}",
+                    indicateLanguages: true,
+                    languages:'java',
+                    measure: 'NONE'
+                    
+                    def kiuwanOutput = readJSON file: "${env.WORKSPACE}/kiuwan/output.json"
+					def secRating = kiuwanOutput.Security.Rating
                 }
             }
         }
