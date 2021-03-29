@@ -397,7 +397,7 @@ EOF
                     }
                 }
             }
-        }*/
+        }
         stage('Stage: Functional Test') {
             agent { 
                 label "${jenkinsWorker}"
@@ -525,7 +525,7 @@ EOF
                     }
                 }
             }
-        }
+        }*/
     }
     post {
         success {
