@@ -187,7 +187,7 @@ spec:
                 }
             }
         }
-        stage('Stage: Package'){
+        /*stage('Stage: Package'){
             stages {
 		        stage('Stage: ECR Token') {
 			        steps {
@@ -374,7 +374,7 @@ EOF
                     }
                 }
             }
-        }
+        }*/
         stage('Stage: Functional Test') {
             agent { 
                 label "${jenkinsWorker}"
