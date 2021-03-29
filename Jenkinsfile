@@ -219,7 +219,8 @@ spec:
 		                script {
 		                    //echo "Maven build..."
 		                    sh "\\cp infrastructure/src/main/resources/META-INF/microprofile-config-dev.properties infrastructure/src/main/resources/META-INF/microprofile-config.properties"
-		                    sh "mvn clean package -Pnative -Dmaven.test.skip=true -Dmaven.test.failure.ignore=true"
+		                    //sh "mvn clean package -Dmaven.test.skip=true -Dmaven.test.failure.ignore=true"
+		                    sh "mvn clean package -Dmaven.test.skip=true -Dmaven.test.failure.ignore=true -Pnative -Dquarkus.native.container-build=true"
 		                    
 		                    echo "Docker Build..."
 		                    //sh "cd application && docker build -f src/main/docker/Dockerfile.jvm -t ${IMAGEN}:${APP_VERSION} ."
