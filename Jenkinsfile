@@ -194,6 +194,7 @@ spec:
                     branch 'master' 
                 }
             }
+            agent any
             steps {
                 script {
                     echo " --> Kiuwan Scan"
