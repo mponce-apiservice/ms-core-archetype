@@ -176,7 +176,7 @@ spec:
                             script {
                                 echo " --> Kiuwan Scan"
                                 kiuwan connectionProfileUuid: 'eh9q-SJTq',
-                                sourcePath: '/application',
+                                sourcePath: '/',
                                 applicationName: "${APP_NAME}",
                                 indicateLanguages: true,
                                 languages:'java',
