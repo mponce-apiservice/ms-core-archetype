@@ -76,7 +76,13 @@ spec:
                     case 'develop': 
                         AMBIENTE = 'dev'
                         NAMESPACE = 'apiservice-microservicios'
-                    case 'semantic-release/*': 
+                    case 'semantic-release/patch': 
+                        AMBIENTE = 'rc'
+                        break
+                    case 'semantic-release/minor': 
+                        AMBIENTE = 'rc'
+                        break
+                    case 'semantic-release/major': 
                         AMBIENTE = 'rc'
                         break
                     case 'release': 
