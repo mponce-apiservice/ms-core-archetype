@@ -7,7 +7,7 @@ Feature:
         Given I set body to {"id": "x","category": {"id": 0,"name": "string"},"name": "doggie","photoUrls": ["string"],"tags": [{"id": 0,"name": "string"}],"status": "Active"}
         When I POST to /petstore/v2/pet
         Then response code should be 415
-        And response body path $.error should be missing phone details from payload    
+        And response body path $.message should be missing id details from payload    
 
 
     @Error_invalid_id
