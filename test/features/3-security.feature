@@ -24,7 +24,7 @@ Feature:
         Then response code should be 200
         And I store the value of body path $.access_token as access token
         And I set bearer token
-        When I DELETE /hr22/9886244926Siddharth
+        When I DELETE /petstore/v2/700
         Then response code should be 200
         And response body path $.msg should be Record deleted
 

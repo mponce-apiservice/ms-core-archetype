@@ -8,7 +8,7 @@ Feature:
         And I set headers to
 	      | name          | value 			 |
 	      | Content-Type  | application/json |
-        When I POST to /v2/pet
+        When I POST to /petstore/v2/pet
         Then response code should be 200
         And response body path $.id should be 700
         And response body path $.name should be doggie
@@ -17,7 +17,7 @@ Feature:
     @GET_specific_record    
     Scenario: retrieve a specific user record
         Given I set Content-type header to application/json
-        When I GET /v2/pet/700
+        When I GET /petstore/v2/pet/700
         Then response code should be 200
 
 
