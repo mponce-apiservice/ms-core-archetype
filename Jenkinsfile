@@ -411,6 +411,11 @@ EOF
 	    	}
     	}
         stage('Stage: Release') {
+            when { 
+                not { 
+                    branch 'develop' 
+                }
+            }
             agent { 
                 label "${jenkinsWorker}"
             }
@@ -425,14 +430,6 @@ EOF
                     }
                     
                     def release = "v${APP_VERSION}"
-                    //if (branch != "master"){
-                    //	release = "v${APP_VERSION}-${env.BRANCH_NAME}"
-                    //}else{
-                    //	release = "v${APP_VERSION}"
-                    //}
-                    
-                    //echo "Remove .properties microprofile"
-                    //sh "rm -rf infrastructure/src/main/resources/META-INF/microprofile-config.properties"
 
                     // Credentials
                     withCredentials([usernamePassword(credentialsId: 'mponce-apiservice', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
