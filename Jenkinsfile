@@ -380,9 +380,9 @@ EOF
             agent { 
                 label "${jenkinsWorker}"
             }
-            /*when {
+            when {
                 branch 'release'
-            }*/
+            }
             stages {
 		        stage('Functional Test') {
 		            steps {
@@ -410,7 +410,7 @@ EOF
 		        }
 	    	}
     	}
-        /*stage('Stage: Release') {
+        stage('Stage: Release') {
             agent { 
                 label "${jenkinsWorker}"
             }
@@ -457,7 +457,7 @@ EOF
                 }
             }
         }
-        stage('Stage: Rollback') {
+        /*stage('Stage: Rollback') {
             when { 
                 not {
                     anyOf { 
