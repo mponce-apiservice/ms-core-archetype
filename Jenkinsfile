@@ -118,7 +118,7 @@ spec:
                     	sh "mvn --batch-mode release:update-versions"
                     	APP_VERSION = readMavenPom().getVersion()
                     	def values = APP_VERSION.split('-')
-                        APP_VERSION = values[0]
+                        APP_VERSION = "${values[0]}-${AMBIENTE}"
                         echo "Version nueva: ${APP_VERSION}"
                         
                     }else if (branch != "master"){
