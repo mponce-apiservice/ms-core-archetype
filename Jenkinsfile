@@ -201,7 +201,7 @@ spec:
                     kiuwan connectionProfileUuid: 'eh9q-SJTq',
                     sourcePath: '/',
                     applicationName: "${APP_NAME}",
-                    indicateLanguages: true,
+                    indicateLanguages: false,
                     languages:'java',
                     measure: 'NONE'
                     
