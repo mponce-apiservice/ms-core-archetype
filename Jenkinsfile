@@ -133,8 +133,6 @@ spec:
                         echo "Version : ${APP_VERSION}"
                         
                     }
-                    //sh 'java --version'
-                    //sh 'mvn -version'
                     
                     sh '\\cp infrastructure/src/main/resources/META-INF/microprofile-config-test.properties infrastructure/src/main/resources/META-INF/microprofile-config.properties'
                     sh 'mvn clean package -Dmaven.test.skip=true -Dmaven.test.failure.ignore=true'
@@ -376,14 +374,14 @@ EOF
                     }
                 }
             }
-        }
+        }*/
         stage('Stage: Functional Test') {
             agent { 
                 label "${jenkinsWorker}"
             }
-            when {
+            /*when {
                 branch 'release'
-            }
+            }*/
             steps {
                 script {
                     try {
@@ -413,7 +411,7 @@ EOF
                 }
             }
         }
-        stage('Stage: Release') {
+        /*stage('Stage: Release') {
             agent { 
                 label "${jenkinsWorker}"
             }
