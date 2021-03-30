@@ -13,7 +13,7 @@ Feature:
         And I set headers to
           | name          | value            |
           | Content-Type  | application/json |
-        When I PUT /petstore/v2/pet/700
+        When I POST /petstore/v2/pet
         Then response code should be 200
         And response body path $.email should be cicd@mail.com  
     
