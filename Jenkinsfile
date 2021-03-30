@@ -280,11 +280,14 @@ spec:
             }
         }
         /*stage('Stage: Deployment') {
-            when { 
-                not { 
-                    branch 'master' 
-                }
-            }
+            when {
+		       not {
+		          anyOf {
+		            branch 'master';
+		            branch 'semantic-release'
+		          }
+		       }
+		    }
             steps {
                 container('tools') {
                     script {
@@ -333,11 +336,14 @@ EOF
             }
         }
         stage('Stage: Deployment Test') {
-            when { 
-                not { 
-                    branch 'master' 
-                }
-            }
+            when {
+		       not {
+		          anyOf {
+		            branch 'master';
+		            branch 'semantic-release'
+		          }
+		       }
+		    }
             steps {
                 container('tools') {
                     script {
@@ -377,11 +383,11 @@ EOF
             }
         }*/
         stage('Stage: Quality Test'){
+        	when {
+                branch 'release'
+            }
             agent { 
                 label "${jenkinsWorker}"
-            }
-            when {
-                branch 'release'
             }
             stages {
 		        stage('Functional Test') {
