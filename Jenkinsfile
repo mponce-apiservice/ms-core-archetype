@@ -101,7 +101,7 @@ spec:
                 }
             }
         }
-        stage('Stage: Build'){
+        /*stage('Stage: Build'){
             agent { 
                 label "${jenkinsWorker}"
             }
@@ -186,7 +186,7 @@ spec:
                     }
                 }
             }
-        }
+        }*/
         /*stage('Stage: Package'){
             stages {
 		        stage('ECR Token') {
