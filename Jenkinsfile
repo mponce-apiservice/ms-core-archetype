@@ -201,8 +201,8 @@ spec:
                     failureThreshold: 40.0,
                     unstableThreshold: 90.0
                     
-                    def kiuwanOutput = readJSON file: "${env.WORKSPACE}/kiuwan/output.json"
-					def secRating = kiuwanOutput.Security.Rating
+                    //def kiuwanOutput = readJSON file: "${env.WORKSPACE}/kiuwan/output.json"
+					//def secRating = kiuwanOutput.Security.Rating
                 }
             }
         }
