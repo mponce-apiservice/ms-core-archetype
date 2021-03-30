@@ -375,42 +375,40 @@ EOF
                 }
             }
         }*/
-        stage('Stage: Functional Test') {
+        stage('Stage: Quality Test'){
             agent { 
                 label "${jenkinsWorker}"
             }
             /*when {
                 branch 'release'
             }*/
-            steps {
-                script {
-                    try {
-						sh 'cd test && npm install'
-                        sh 'cd test && npm test'
-			    
-						sh 'cd test && cp reports.json $WORKSPACE'
-                        cucumber buildStatus: 'SUCCESS', fileIncludePattern: 'reports.json'
-                    } catch (e) {
-						sh 'cd test && cp reports.json $WORKSPACE'
-                        cucumber buildStatus: 'FAIL', fileIncludePattern: 'reports.json'
-                    }
-                }
-            }
-        }
-        stage('Stage: Report Functional Test') {
-            agent { 
-                label "${jenkinsWorker}"
-            }
-            when { 
-                branch 'release'
-            }
-            steps {
-                script {
-                    echo " --> Reporte Cucumber..."
-                    echo "REPORT-TEST: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}cucumber-html-reports/overview-features.html"
-                }
-            }
-        }
+            stages {
+		        stage('Stage: Functional Test') {
+		            steps {
+		                script {
+		                    try {
+								sh 'cd test && npm install'
+		                        sh 'cd test && npm test'
+					    
+								sh 'cd test && cp reports.json $WORKSPACE'
+		                        cucumber buildStatus: 'SUCCESS', fileIncludePattern: 'reports.json'
+		                    } catch (e) {
+								sh 'cd test && cp reports.json $WORKSPACE'
+		                        cucumber buildStatus: 'FAIL', fileIncludePattern: 'reports.json'
+		                    }
+		                }
+		            }
+		        }
+		        stage('Stage: Report Functional Test') {
+		            steps {
+		                script {
+		                    echo " --> Reporte Cucumber..."
+		                    echo "REPORT-TEST: `${env.JOB_NAME}` #${env.BUILD_NUMBER}:\n${env.BUILD_URL}cucumber-html-reports/overview-features.html"
+		                }
+		            }
+		        }
+	    	}
+    	}
         /*stage('Stage: Release') {
             agent { 
                 label "${jenkinsWorker}"
