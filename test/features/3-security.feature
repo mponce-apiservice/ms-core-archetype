@@ -13,7 +13,7 @@ Feature:
         And I set headers to
           | name          | value            |
           | Content-Type  | application/json |
-        When I PUT /petstore/v2/700
+        When I PUT /petstore/v2/pet/700
         Then response code should be 200
         And response body path $.email should be cicd@mail.com  
     
@@ -24,7 +24,7 @@ Feature:
         Then response code should be 200
         And I store the value of body path $.access_token as access token
         And I set bearer token
-        When I DELETE /petstore/v2/700
+        When I DELETE /petstore/v2/pet/700
         Then response code should be 200
         And response body path $.msg should be Record deleted
 
