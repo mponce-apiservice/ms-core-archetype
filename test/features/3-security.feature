@@ -26,7 +26,7 @@ Feature:
         And I set bearer token
         When I DELETE /petstore/v2/pet/700
         Then response code should be 200
-        And response body path $.message should be Record deleted
+        And response body path $.message should be 700
 
 
 
