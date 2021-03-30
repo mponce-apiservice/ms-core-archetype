@@ -142,7 +142,7 @@ spec:
                 }
             }
         }
-        /*stage('Stage: Test'){
+        stage('Stage: Test'){
             agent { 
                 label "${jenkinsWorker}"
             }
@@ -174,23 +174,17 @@ spec:
                     steps {
                         script {
                             echo " --> Kiuwan Scan"
-                            //kiuwan connectionProfileUuid: 'eh9q-SJTq',
-                            //sourcePath: '/',
-                            //applicationName: "${APP_NAME}",
-                            //indicateLanguages: true,
-                            //languages:'java',
-                            //measure: 'NONE'
-                            
-                            //def kiuwanOutput = readJSON file: "${env.WORKSPACE}/kiuwan/output.json"
-							//def secRating = kiuwanOutput.Security.Rating
-							
-							build job: 'testing_kiuwan', parameters: [string(name: 'GIT_BRANCH_NAME', value: env.BRANCH_NAME)]
+		                    kiuwan connectionProfileUuid: 'eh9q-SJTq',
+		                    sourcePath: "${WORKSPACE}",
+		                    applicationName: "${APP_NAME}",
+		                    failureThreshold: 40.0,
+		                    unstableThreshold: 90.0
                         }
                     }
                 }
             }
-        }*/
-        stage('Stage: Kiuwan Test'){
+        }
+        /*stage('Stage: Kiuwan Test'){
             agent any
             steps {
                 script {
@@ -201,11 +195,9 @@ spec:
                     failureThreshold: 40.0,
                     unstableThreshold: 90.0
                     
-                    //def kiuwanOutput = readJSON file: "${env.WORKSPACE}/kiuwan/output.json"
-					//def secRating = kiuwanOutput.Security.Rating
                 }
             }
-        }
+        }*/
         /*stage('Stage: Package'){
             stages {
 		        stage('Stage: ECR Token') {
