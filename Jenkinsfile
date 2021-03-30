@@ -197,7 +197,9 @@ spec:
                     echo " --> Kiuwan Scan"
                     kiuwan connectionProfileUuid: 'eh9q-SJTq',
                     sourcePath: '/',
-                    applicationName: "${APP_NAME}"
+                    applicationName: "${APP_NAME}",
+                    failureThreshold: 40.0,
+                    unstableThreshold: 90.0
                     
                     def kiuwanOutput = readJSON file: "${env.WORKSPACE}/kiuwan/output.json"
 					def secRating = kiuwanOutput.Security.Rating
