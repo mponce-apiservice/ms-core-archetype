@@ -460,7 +460,7 @@ EOF
                     echo " --> Release..."
                     def branch = "${env.BRANCH_NAME}"
                     
-                    if (branch == "semantic-release"){
+                    if (branch == "semantic-release/patch" || branch == "semantic-release/menor" || branch == "semantic-release/major"){
                     	echo "release version"
                     	def values = APP_VERSION.split('-')
                     	sh "mvn --batch-mode release:update-versions -DdevelopmentVersion=${values[0]}"
@@ -476,7 +476,7 @@ EOF
                             
                             git config --local credential.helper "!f() { echo username=\\${GIT_USERNAME}; echo password=\\${GIT_PASSWORD}; }; f"
                             
-                            if [ "${env.BRANCH_NAME}" == "semantic-release" ]; then
+                            if [ "${env.BRANCH_NAME}" == "semantic-release/patch" || "${env.BRANCH_NAME}" == "semantic-release/menor" || "${env.BRANCH_NAME}" == "semantic-release/major"]; then
                             	git add -A
 								git commit -m "add release ${release}"
 								git push --force origin HEAD:${env.BRANCH_NAME}
