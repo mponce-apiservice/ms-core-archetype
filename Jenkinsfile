@@ -101,7 +101,7 @@ spec:
                 }
             }
         }
-        /*stage('Stage: Build'){
+        stage('Stage: Build'){
             agent { 
                 label "${jenkinsWorker}"
             }
@@ -186,8 +186,8 @@ spec:
                     }
                 }
             }
-        }*/
-        /*stage('Stage: Package'){
+        }
+        stage('Stage: Package'){
             stages {
 		        stage('ECR Token') {
 			        steps {
@@ -219,13 +219,14 @@ spec:
 		                script {
 		                    //echo "Maven build..."
 		                    sh "\\cp infrastructure/src/main/resources/META-INF/microprofile-config-dev.properties infrastructure/src/main/resources/META-INF/microprofile-config.properties"
-		                    //sh "mvn clean package -Dmaven.test.skip=true -Dmaven.test.failure.ignore=true"
-		                    sh "mvn verify -Pnative"
-		                    sh "mvn clean package -Dmaven.test.skip=true -Dmaven.test.failure.ignore=true -Pnative -Dquarkus.native.container-build=true"
+		                    sh "mvn clean package -Dmaven.test.skip=true -Dmaven.test.failure.ignore=true"
+		                    
+		                    //sh "mvn verify -Pnative"
+		                    //sh "mvn clean package -Dmaven.test.skip=true -Dmaven.test.failure.ignore=true -Pnative -Dquarkus.native.container-build=true"
 		                    
 		                    echo "Docker Build..."
-		                    //sh "cd application && docker build -f src/main/docker/Dockerfile.jvm -t ${IMAGEN}:${APP_VERSION} ."
-		                    sh "cd application && docker build -f src/main/docker/Dockerfile.native -t ${IMAGEN}:${APP_VERSION} ."
+		                    sh "cd application && docker build -f src/main/docker/Dockerfile.jvm -t ${IMAGEN}:${APP_VERSION} ."
+		                    //sh "cd application && docker build -f src/main/docker/Dockerfile.native -t ${IMAGEN}:${APP_VERSION} ."
 		                    
 		                    echo "Docker Tag..."
 		                    sh "docker tag ${IMAGEN}:${APP_VERSION} ${PUSH}:${APP_VERSION}"
@@ -278,7 +279,7 @@ spec:
                 }
             }
         }
-        stage('Stage: Deployment') {
+        /*stage('Stage: Deployment') {
             when { 
                 not { 
                     branch 'master' 
