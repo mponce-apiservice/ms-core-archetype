@@ -136,8 +136,8 @@ spec:
                     //sh 'java --version'
                     //sh 'mvn -version'
                     
-                    //sh '\\cp infrastructure/src/main/resources/META-INF/microprofile-config-test.properties infrastructure/src/main/resources/META-INF/microprofile-config.properties'
-                    //sh 'mvn clean package -Dmaven.test.skip=true -Dmaven.test.failure.ignore=true'
+                    sh '\\cp infrastructure/src/main/resources/META-INF/microprofile-config-test.properties infrastructure/src/main/resources/META-INF/microprofile-config.properties'
+                    sh 'mvn clean package -Dmaven.test.skip=true -Dmaven.test.failure.ignore=true'
                     
                 }
             }
@@ -179,25 +179,16 @@ spec:
 		                    applicationName: "${APP_NAME}",
 		                    failureThreshold: 40.0,
 		                    unstableThreshold: 90.0
+		                    
+		                    def kiuwanOutput = readJSON file: "${WORKSPACE}/kiuwan/output.json"
+							def secRating = kiuwanOutput.Security.Rating
+							
+							echo "Rating : ${secRating}"
                         }
                     }
                 }
             }
         }
-        /*stage('Stage: Kiuwan Test'){
-            agent any
-            steps {
-                script {
-                    echo " --> Kiuwan Scan"
-                    kiuwan connectionProfileUuid: 'eh9q-SJTq',
-                    sourcePath: "${WORKSPACE}",
-                    applicationName: "${APP_NAME}",
-                    failureThreshold: 40.0,
-                    unstableThreshold: 90.0
-                    
-                }
-            }
-        }*/
         /*stage('Stage: Package'){
             stages {
 		        stage('Stage: ECR Token') {
