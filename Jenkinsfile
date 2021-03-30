@@ -476,7 +476,8 @@ EOF
                             
                             git config --local credential.helper "!f() { echo username=\\${GIT_USERNAME}; echo password=\\${GIT_PASSWORD}; }; f"
                             
-                            if [ "${env.BRANCH_NAME}" == "semantic-release\/patch"]; then
+                            if [ "${env.BRANCH_NAME}" == "semantic-release/patch"] || [ "${env.BRANCH_NAME}" == "semantic-release/menor"] || [ "${env.BRANCH_NAME}" == "semantic-release/major"] 
+                            then
                                 echo " --> commit release candidate..."
                             	git add -A
 								git commit -m "add release ${release}"
