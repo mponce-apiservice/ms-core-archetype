@@ -196,7 +196,7 @@ spec:
                 script {
                     echo " --> Kiuwan Scan"
                     kiuwan connectionProfileUuid: 'eh9q-SJTq',
-                    sourcePath: '${WORKSPACE}',
+                    sourcePath: "${WORKSPACE}",
                     applicationName: "${APP_NAME}",
                     failureThreshold: 40.0,
                     unstableThreshold: 90.0
