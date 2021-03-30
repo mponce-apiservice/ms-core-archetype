@@ -170,7 +170,7 @@ spec:
                 }
             }
         }
-        stage('Stage: Test'){
+        /*stage('Stage: Test'){
             agent { 
                 label "${jenkinsWorker}"
             }
@@ -308,7 +308,7 @@ spec:
                     }
                 }
             }
-        }
+        }*/
         /*stage('Stage: Deployment') {
             when {
 		       not {
