@@ -35,7 +35,7 @@ spec:
         REGISTRY = "331022218908.dkr.ecr.us-east-1.amazonaws.com"
         REPOSITORY = "apiservice"
         PUSH = ""
-        NAMESPACE = "apiservice-microservicios"
+        NAMESPACE = ""
         URL_OPENSHIFT = "https://api.dinersclub-dev.b6r7.p1.openshiftapps.com:6443"
     }
     options {
@@ -75,19 +75,21 @@ spec:
                     switch(branch) {
                     case 'develop': 
                         AMBIENTE = 'dev'
-                        // NAMESPACE = 'develop'
+                        NAMESPACE = 'apiservice-microservicios'
+                    case 'semantic-release': 
+                        AMBIENTE = 'rc'
                         break
                     case 'release': 
                         AMBIENTE = 'qa'
-                        // NAMESPACE = 'qa'
+                        NAMESPACE = 'apiservice-microservicios'
                         break
                     case 'uat': 
                         AMBIENTE = 'uat'
-                        // NAMESPACE = 'uat'
+                        NAMESPACE = 'apiservice-microservicios'
                         break
                     case 'preprod': 
                         AMBIENTE = 'preprod'
-                        // NAMESPACE = 'preproduction'
+                        NAMESPACE = 'apiservice-microservicios'
                         break  
                     case 'master': 
                         AMBIENTE = 'master'
