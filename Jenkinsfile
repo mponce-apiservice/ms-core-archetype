@@ -189,7 +189,7 @@ spec:
         }
         /*stage('Stage: Package'){
             stages {
-		        stage('Stage: ECR Token') {
+		        stage('ECR Token') {
 			        steps {
 			            container('tools') {
 			                script {
@@ -211,7 +211,7 @@ spec:
 			            }
 			        }
 		        }
-		        stage('Stage: ECR Push') { 
+		        stage('ECR Push') { 
 		            agent { 
 		                label "${jenkinsWorker}"
 		            }
@@ -383,7 +383,7 @@ EOF
                 branch 'release'
             }*/
             stages {
-		        stage('Stage: Functional Test') {
+		        stage('Functional Test') {
 		            steps {
 		                script {
 		                    try {
@@ -399,7 +399,7 @@ EOF
 		                }
 		            }
 		        }
-		        stage('Stage: Report Functional Test') {
+		        stage('Report Functional Test') {
 		            steps {
 		                script {
 		                    echo " --> Reporte Cucumber..."
