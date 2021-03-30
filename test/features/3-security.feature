@@ -9,13 +9,13 @@ Feature:
         Then response code should be 200
         And I store the value of body path $.jwt as access token
         And I set bearer token
-        When I set body to {"email": "cicd@mail.com"}
+        When I set body to {"id": 700,"category": {"id": 0,"name": "string"},"name": "cat","photoUrls": ["string"],"tags": [{"id": 0,"name": "string"}],"status": "Active"}
         And I set headers to
           | name          | value            |
           | Content-Type  | application/json |
-        When I POST /petstore/v2/pet
+        When I PUT /petstore/v2/pet
         Then response code should be 200
-        And response body path $.email should be cicd@mail.com  
+        And response body path $.name should be cat
     
     @OAuth_security
     Scenario: delete a record which needs oauth access token
