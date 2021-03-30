@@ -133,16 +133,16 @@ spec:
                         echo "Version : ${APP_VERSION}"
                         
                     }
-                    sh 'java --version'
-                    sh 'mvn -version'
+                    //sh 'java --version'
+                    //sh 'mvn -version'
                     
-                    sh '\\cp infrastructure/src/main/resources/META-INF/microprofile-config-test.properties infrastructure/src/main/resources/META-INF/microprofile-config.properties'
-                    sh 'mvn clean package -Dmaven.test.skip=true -Dmaven.test.failure.ignore=true'
+                    //sh '\\cp infrastructure/src/main/resources/META-INF/microprofile-config-test.properties infrastructure/src/main/resources/META-INF/microprofile-config.properties'
+                    //sh 'mvn clean package -Dmaven.test.skip=true -Dmaven.test.failure.ignore=true'
                     
                 }
             }
         }
-        stage('Stage: Test'){
+        /*stage('Stage: Test'){
             agent { 
                 label "${jenkinsWorker}"
             }
@@ -170,40 +170,34 @@ spec:
                         }
                     }
                 }
-                /*stage('Kiuwan Test'){
+                stage('Kiuwan Test'){
                     steps {
                         script {
                             echo " --> Kiuwan Scan"
-                            kiuwan connectionProfileUuid: 'eh9q-SJTq',
-                            sourcePath: '/',
-                            applicationName: "${APP_NAME}",
-                            indicateLanguages: true,
-                            languages:'java',
-                            measure: 'NONE'
+                            //kiuwan connectionProfileUuid: 'eh9q-SJTq',
+                            //sourcePath: '/',
+                            //applicationName: "${APP_NAME}",
+                            //indicateLanguages: true,
+                            //languages:'java',
+                            //measure: 'NONE'
                             
-                            def kiuwanOutput = readJSON file: "${env.WORKSPACE}/kiuwan/output.json"
-							def secRating = kiuwanOutput.Security.Rating
+                            //def kiuwanOutput = readJSON file: "${env.WORKSPACE}/kiuwan/output.json"
+							//def secRating = kiuwanOutput.Security.Rating
+							
+							build job: 'testing_kiuwan', parameters: [string(name: 'GIT_BRANCH_NAME', value: env.BRANCH_NAME)]
                         }
                     }
-                }*/
-            }
-        }
-        stage('Stage: Kiuwan Test'){
-            when { 
-                not { 
-                    branch 'master' 
                 }
             }
+        }*/
+        stage('Stage: Kiuwan Test'){
             agent any
             steps {
                 script {
                     echo " --> Kiuwan Scan"
                     kiuwan connectionProfileUuid: 'eh9q-SJTq',
                     sourcePath: '/',
-                    applicationName: "${APP_NAME}",
-                    indicateLanguages: false,
-                    languages:'java',
-                    measure: 'NONE'
+                    applicationName: "${APP_NAME}"
                     
                     def kiuwanOutput = readJSON file: "${env.WORKSPACE}/kiuwan/output.json"
 					def secRating = kiuwanOutput.Security.Rating
