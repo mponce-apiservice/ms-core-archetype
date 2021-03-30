@@ -434,7 +434,8 @@ EOF
                     
                     if (branch == "semantic-release"){
                     	echo "release version"
-                    	sh "mvn --batch-mode release:update-versions -DdevelopmentVersion=${APP_VERSION}"
+                    	def values = APP_VERSION.split('-')
+                    	sh "mvn --batch-mode release:update-versions -DdevelopmentVersion=${values[0]}"
                     }
                     
                     def release = "v${APP_VERSION}"
