@@ -461,7 +461,7 @@ EOF
                     def branch = "${env.BRANCH_NAME}"
                     def release = "v${APP_VERSION}"
 
-					if (branch == "semantic-release/patch" || branch == "semantic-release/menor" || branch == "semantic-release/major"){
+					if (branch == "semantic-release/patch" || branch == "semantic-release/minor" || branch == "semantic-release/major"){
 					
                     	def values = APP_VERSION.split('-')
                     	sh "mvn --batch-mode release:update-versions -DdevelopmentVersion=${values[0]}"
