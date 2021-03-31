@@ -459,35 +459,47 @@ EOF
                 script {
                     echo " --> Release..."
                     def branch = "${env.BRANCH_NAME}"
-                    
-                    if (branch == "semantic-release/patch" || branch == "semantic-release/menor" || branch == "semantic-release/major"){
-                    	echo "release version"
-                    	def values = APP_VERSION.split('-')
-                    	sh "mvn --batch-mode release:update-versions -DdevelopmentVersion=${values[0]}"
-                    }
-                    
                     def release = "v${APP_VERSION}"
 
-                    // Credentials
-                    withCredentials([usernamePassword(credentialsId: 'mponce-apiservice', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
-                        sh label: "", 
-                        script: """
-                            #!/bin/bash
-                            
-                            git config --local credential.helper "!f() { echo username=\\${GIT_USERNAME}; echo password=\\${GIT_PASSWORD}; }; f"
-                            
-                            if [ '${env.BRANCH_NAME}' == semantic-release* ]; then
-                                echo " --> commit release candidate..."
-                            	git add -A
+					if (branch == "semantic-release/patch" || branch == "semantic-release/menor" || branch == "semantic-release/major"){
+					
+                    	def values = APP_VERSION.split('-')
+                    	sh "mvn --batch-mode release:update-versions -DdevelopmentVersion=${values[0]}"
+                    	
+	                    // Credentials
+	                    withCredentials([usernamePassword(credentialsId: 'mponce-apiservice', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+	                        sh label: "", 
+	                        script: """
+	                            #!/bin/bash
+	                            
+	                            git config --local credential.helper "!f() { echo username=\\${GIT_USERNAME}; echo password=\\${GIT_PASSWORD}; }; f"
+	                            
+	                            echo " --> commit release candidate..."
+	                        	git add -A
 								git commit -m "add release ${release}"
 								git push --force origin HEAD:${env.BRANCH_NAME}
-							fi
-                            
-                            git tag ${release}
-                            git push --force origin ${release}
-                        
-                        """
-
+	                            
+	                            echo " --> create tag..."
+	                            git tag ${release}
+	                            git push --force origin ${release}
+	                        
+	                        """
+	                    }
+                    }else{
+                    	// Credentials
+	                    withCredentials([usernamePassword(credentialsId: 'mponce-apiservice', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+	                        sh label: "", 
+	                        script: """
+	                            #!/bin/bash
+	                            
+	                            git config --local credential.helper "!f() { echo username=\\${GIT_USERNAME}; echo password=\\${GIT_PASSWORD}; }; f"
+	                            
+	                            echo " --> create tag..."
+	                            git tag ${release}
+	                            git push --force origin ${release}
+	                        
+	                        """
+	                    }
                     }
                 }
             }
