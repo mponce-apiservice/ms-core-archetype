@@ -125,7 +125,7 @@ spec:
                     	APP_VERSION = readMavenPom().getVersion()
                     	def values = APP_VERSION.split('-')
                         def major = values[0].split('\\.')
-                        def new_major = major[0] + 1
+                        def new_major = major[0].toInteger() + 1
                         APP_VERSION = "${new_major}.${major[1]}.${major[2]}-${AMBIENTE}"
                         echo "Version nueva: ${APP_VERSION}"
                         
