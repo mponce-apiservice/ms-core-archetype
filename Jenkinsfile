@@ -134,7 +134,7 @@ spec:
                         echo "release version"
                     	sh "mvn --batch-mode release:update-versions"
                     	APP_VERSION = readMavenPom().getVersion()
-                    	def values = APP_VERSION.split('-')
+                    	def values = APP_VERSION.split('.')
                     	echo "values: ${values[0]}"
                     	def num = values[0]
                     	echo "num: ${num}"
