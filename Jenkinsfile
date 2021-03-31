@@ -415,7 +415,7 @@ EOF
                     }
                 }
             }
-        }*/
+        }
         stage('Stage: Quality Test'){
         	when {
                 branch 'release'
