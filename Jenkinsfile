@@ -124,7 +124,7 @@ spec:
                     	sh "mvn --batch-mode release:update-versions"
                     	APP_VERSION = readMavenPom().getVersion()
                     	def values = APP_VERSION.split('-')
-                        def major = values[0].split('.')
+                        def major = values[0].split('\\.')
                         def new_major = major[0] + 1
                         APP_VERSION = "${new_major}.${major[1]}.${major[2]}-${AMBIENTE}"
                         echo "Version nueva: ${APP_VERSION}"
@@ -135,7 +135,7 @@ spec:
                     	sh "mvn --batch-mode release:update-versions"
                     	APP_VERSION = readMavenPom().getVersion()
                     	def values = APP_VERSION.split('-')
-                        def minor = values[0].split('\.')
+                        def minor = values[0].split('\\.')
                         def new_minor = minor[1] + 1
                         APP_VERSION = "${minor[0]}.${new_minor}.${minor[2]}-${AMBIENTE}"
                         echo "Version nueva: ${APP_VERSION}"
