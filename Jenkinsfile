@@ -464,7 +464,7 @@ EOF
 					if (branch == "semantic-release/patch" || branch == "semantic-release/minor" || branch == "semantic-release/major"){
 					
                     	def values = APP_VERSION.split('-')
-                    	sh "mvn --batch-mode release:update-versions -DdevelopmentVersion=${values[0]}"
+                    	sh "mvn --batch-mode release:update-versions -DdevelopmentVersion=${values[0]}-SNAPSHOT"
                     	
 	                    // Credentials
 	                    withCredentials([usernamePassword(credentialsId: 'mponce-apiservice', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
