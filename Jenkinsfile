@@ -136,7 +136,9 @@ spec:
                     	APP_VERSION = readMavenPom().getVersion()
                     	def values = APP_VERSION.split('-')
                     	echo "values: ${values[0]}"
-                        def minor = values[0].split('.')
+                    	def num = values[0]
+                    	echo "num: ${num}"
+                        def minor = num.split('.')
                         echo "minor: ${minor[1]}"
                         def new_minor = minor[1] + 1
                          echo "new_minor: ${new_minor}"
