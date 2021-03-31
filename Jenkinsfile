@@ -170,7 +170,7 @@ spec:
                 }
             }
         }
-        /*stage('Stage: Test'){
+        stage('Stage: Test'){
             agent { 
                 label "${jenkinsWorker}"
             }
@@ -308,13 +308,15 @@ spec:
                     }
                 }
             }
-        }*/
-        /*stage('Stage: Deployment') {
+        }
+        stage('Stage: Deployment') {
             when {
 		       not {
 		          anyOf {
-		            branch 'master';
-		            branch 'semantic-release'
+		            branch 'master'
+		            branch 'semantic-release/patch'
+		            branch 'semantic-release/minor'
+		            branch 'semantic-release/major'
 		          }
 		       }
 		    }
@@ -369,8 +371,10 @@ EOF
             when {
 		       not {
 		          anyOf {
-		            branch 'master';
-		            branch 'semantic-release'
+		            branch 'master'
+		            branch 'semantic-release/patch'
+		            branch 'semantic-release/minor'
+		            branch 'semantic-release/major'
 		          }
 		       }
 		    }
@@ -504,12 +508,15 @@ EOF
                 }
             }
         }
-        /*stage('Stage: Rollback') {
+        stage('Stage: Rollback') {
             when { 
                 not {
                     anyOf { 
                         branch 'develop'
                         branch 'master'
+                        branch 'semantic-release/patch'
+		            	branch 'semantic-release/minor'
+		            	branch 'semantic-release/major'
                     }
                 }
             }
@@ -548,7 +555,7 @@ EOF
                     }
                 }
             }
-        }*/
+        }
     }
     post {
         success {
