@@ -73,6 +73,10 @@ spec:
                     echo " --> Rama: ${branch}"
                     
                     switch(branch) {
+                    case 'main': 
+                        AMBIENTE = 'main'
+                        NAMESPACE = 'apiservice-workshop'
+                        break
                     case 'develop': 
                         AMBIENTE = 'dev'
                         NAMESPACE = 'apiservice-microservicios'
@@ -88,7 +92,7 @@ spec:
                         break
                     case 'release': 
                         AMBIENTE = 'qa'
-                        NAMESPACE = 'apiservice-workshop'
+                        NAMESPACE = 'apiservice-microservicios'
                         break
                     case 'uat': 
                         AMBIENTE = 'uat'
@@ -235,7 +239,7 @@ spec:
 		                    sh "cp infrastructure/src/main/resources/META-INF/microprofile-config-dev.properties infrastructure/src/main/resources/META-INF/microprofile-config.properties"
 		                    
 		                    //sh "mvn clean package -Dmaven.test.skip=true -Dmaven.test.failure.ignore=true"
-		                    sh "mvn clean package -Dmaven.test.skip=true -Dmaven.test.failure.ignore=true -Pnative"
+		                    sh "mvn clean package -Dmaven.test.skip=true -Dmaven.test.failure.ignore=true -Pnative --allow-incomplete-classpath"
 		                    
 		                    echo "Docker Build..."
 		                    //sh "cd application && docker build -f src/main/docker/Dockerfile.jvm -t ${IMAGEN}:${APP_VERSION} ."
@@ -445,6 +449,7 @@ EOF
         stage('Stage: Release') {
             when { 
                 not { 
+                    branch 'main' 
                     branch 'develop' 
                 }
             }
@@ -533,6 +538,7 @@ EOF
             when { 
                 not {
                     anyOf { 
+                        branch 'main'
                         branch 'develop'
                         branch 'master'
                         branch 'semantic-release/patch'
