@@ -449,8 +449,10 @@ EOF
         stage('Stage: Release') {
             when { 
                 not { 
-                    branch 'main' 
-                    branch 'develop' 
+                  	anyOf {
+                    	branch 'main' 
+                    	branch 'develop'
+                  	}
                 }
             }
             agent { 
