@@ -106,6 +106,7 @@
                     <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
                     <maven.home>${maven.home}</maven.home>
                   </systemPropertyVariables>
+                  <buildArgs>--allow-incomplete-classpath</buildArgs>
                 </configuration>
               </execution>
             </executions>
