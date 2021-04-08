@@ -88,7 +88,7 @@ spec:
                         break
                     case 'release': 
                         AMBIENTE = 'qa'
-                        NAMESPACE = 'apiservice-microservicios'
+                        NAMESPACE = 'apiservice-workshop'
                         break
                     case 'uat': 
                         AMBIENTE = 'uat'
@@ -117,51 +117,6 @@ spec:
             steps {
                 script {
                     
-                    def branch = "${env.BRANCH_NAME}"
-                    
-                    if (branch == "semantic-release/major"){
-                    
-                        echo "release version"
-                    	def values = APP_VERSION.split('-')
-                        def major = values[0].split('\\.')
-                        def new_major = major[0].toInteger() + 1
-                        APP_VERSION = "${new_major}.0.0-${AMBIENTE}"
-                        echo "Version nueva: ${APP_VERSION}"
-                        
-                    }else if (branch == "semantic-release/minor"){
-                    
-                        echo "release version"
-                    	def values = APP_VERSION.split('-')
-                        def minor = values[0].split('\\.')
-                        def new_minor = minor[1].toInteger() + 1
-                        APP_VERSION = "${minor[0]}.${new_minor}.0-${AMBIENTE}"
-                        echo "Version nueva: ${APP_VERSION}"
-                        
-                    }else if (branch == "semantic-release/patch"){
-                    
-                        echo "release version"
-                    	sh "mvn --batch-mode release:update-versions"
-                    	APP_VERSION = readMavenPom().getVersion()
-                    	def values = APP_VERSION.split('-')
-                        APP_VERSION = "${values[0]}-${AMBIENTE}"
-                        echo "Version nueva: ${APP_VERSION}"
-                        
-                    }else if (branch != "master"){
-                    
-                        echo "environment version"
-                        def values = APP_VERSION.split('-')
-                    	APP_VERSION = "${values[0]}-${branch}"
-                        echo "Version : ${APP_VERSION}"
-                        
-                    }else{
-                    
-                    	echo "stable version"
-                        def values = APP_VERSION.split('-')
-                    	APP_VERSION = "${values[0]}"
-                        echo "Version : ${APP_VERSION}"
-                        
-                    }
-                    
                     echo "Maven build..."
                     sh 'rm -rf infrastructure/src/main/resources/META-INF/microprofile-config.properties'
                     sh 'cp infrastructure/src/main/resources/META-INF/microprofile-config-test.properties infrastructure/src/main/resources/META-INF/microprofile-config.properties'
@@ -170,7 +125,7 @@ spec:
                 }
             }
         }
-        /*stage('Stage: Test'){
+        stage('Stage: Test'){
             agent { 
                 label "${jenkinsWorker}"
             }
@@ -216,7 +171,7 @@ spec:
                     }
                 }
             }
-        }*/
+        }
         stage('Stage: Package'){
             when {
 		       not {
@@ -256,6 +211,25 @@ spec:
 		            }
 		            steps {
 		                script {
+		                
+		                	def branch = "${env.BRANCH_NAME}"
+                    
+		                    if (branch != "master"){
+		                    
+		                        echo "environment version"
+		                        def values = APP_VERSION.split('-')
+		                    	APP_VERSION = "${values[0]}-${branch}"
+		                        echo "Version : ${APP_VERSION}"
+		                        
+		                    }else{
+		                    
+		                    	echo "stable version"
+		                        def values = APP_VERSION.split('-')
+		                    	APP_VERSION = "${values[0]}"
+		                        echo "Version : ${APP_VERSION}"
+		                        
+		                    }
+		                	
 		                    echo "Maven build..."
 		                    sh "rm -rf infrastructure/src/main/resources/META-INF/microprofile-config.properties"
 		                    sh "cp infrastructure/src/main/resources/META-INF/microprofile-config-dev.properties infrastructure/src/main/resources/META-INF/microprofile-config.properties"
@@ -481,12 +455,41 @@ EOF
                 script {
                     echo " --> Release..."
                     def branch = "${env.BRANCH_NAME}"
+                    
+                    if (branch == "semantic-release/major"){
+                    
+                        echo "release version"
+                    	def values = APP_VERSION.split('-')
+                        def major = values[0].split('\\.')
+                        def new_major = major[0].toInteger() + 1
+                        APP_VERSION = "${new_major}.0.0.${AMBIENTE}"
+                        echo "Version nueva: ${APP_VERSION}"
+                        
+                    }else if (branch == "semantic-release/minor"){
+                    
+                        echo "release version"
+                    	def values = APP_VERSION.split('-')
+                        def minor = values[0].split('\\.')
+                        def new_minor = minor[1].toInteger() + 1
+                        APP_VERSION = "${minor[0]}.${new_minor}.0.${AMBIENTE}"
+                        echo "Version nueva: ${APP_VERSION}"
+                        
+                    }else if (branch == "semantic-release/patch"){
+                    
+                        echo "release version"
+                    	sh "mvn --batch-mode release:update-versions"
+                    	APP_VERSION = readMavenPom().getVersion()
+                    	def values = APP_VERSION.split('-')
+                        APP_VERSION = "${values[0]}.${AMBIENTE}"
+                        echo "Version nueva: ${APP_VERSION}"
+                        
+                    }
+                    
                     def release = "v${APP_VERSION}"
 
 					if (branch == "semantic-release/patch" || branch == "semantic-release/minor" || branch == "semantic-release/major"){
 					
-                    	def values = APP_VERSION.split('-')
-                    	sh "mvn --batch-mode release:update-versions -DdevelopmentVersion=${values[0]}-SNAPSHOT"
+                    	sh "mvn versions:set -DnewVersion=${APP_VERSION}"
                     	
 	                    // Credentials
 	                    withCredentials([usernamePassword(credentialsId: 'mponce-apiservice', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {

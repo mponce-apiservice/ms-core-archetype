@@ -26,7 +26,8 @@
     <quarkus.platform.version>1.10.5.Final</quarkus.platform.version>
     <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
     <docker-plugin.version>0.34.1</docker-plugin.version>
-    <quarkus.logging.version>0.2.3</quarkus.logging.version>
+    <logstash.logback.encoder.version>6.6</logstash.logback.encoder.version>
+    <logback.classic.version>1.2.3</logback.classic.version>
   </properties>
 	
   <dependencyManagement>
@@ -41,7 +42,12 @@
     </dependencies>
   </dependencyManagement>
 	
-  <dependencies/>
+  <dependencies>
+    <dependency>
+      <groupId>org.jboss.slf4j</groupId>
+      <artifactId>slf4j-jboss-logmanager</artifactId>
+	</dependency>
+  </dependencies>
   
   <build>
     <plugins>
