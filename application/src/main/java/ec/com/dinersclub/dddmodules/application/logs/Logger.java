@@ -10,7 +10,7 @@ import io.vertx.core.json.JsonObject;
 @ApplicationScoped
 public class Logger implements ILogger {
 	
-	private static final org.slf4j.Logger log = LoggerFactory.getLogger("Logger");
+	private static final org.slf4j.Logger log = LoggerFactory.getLogger(Logger.class);
 	
 	@Override
 	public void debug(Log value) {
