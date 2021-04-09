@@ -469,7 +469,8 @@ EOF
                     	def values = APP_VERSION.split('-')
                         def major = values[0].split('\\.')
                         def new_major = major[0].toInteger() + 1
-                        APP_VERSION = "${new_major}.0.0.${AMBIENTE}"
+                        //APP_VERSION = "${new_major}.0.0.${AMBIENTE}"
+                        APP_VERSION = "${new_major}.0.0"
                         echo "Version nueva: ${APP_VERSION}"
                         
                     }else if (branch == "semantic-release/minor"){
@@ -478,7 +479,8 @@ EOF
                     	def values = APP_VERSION.split('-')
                         def minor = values[0].split('\\.')
                         def new_minor = minor[1].toInteger() + 1
-                        APP_VERSION = "${minor[0]}.${new_minor}.0.${AMBIENTE}"
+                        //APP_VERSION = "${minor[0]}.${new_minor}.0.${AMBIENTE}"
+                        APP_VERSION = "${minor[0]}.${new_minor}.0"
                         echo "Version nueva: ${APP_VERSION}"
                         
                     }else if (branch == "semantic-release/patch"){
@@ -487,14 +489,15 @@ EOF
                     	sh "mvn --batch-mode release:update-versions"
                     	APP_VERSION = readMavenPom().getVersion()
                     	def values = APP_VERSION.split('-')
-                        APP_VERSION = "${values[0]}.${AMBIENTE}"
+                        //APP_VERSION = "${values[0]}.${AMBIENTE}"
+                        APP_VERSION = "${values[0]}"
                         echo "Version nueva: ${APP_VERSION}"
                         
                     }
                     
-                    def release = "v${APP_VERSION}"
-
 					if (branch == "semantic-release/patch" || branch == "semantic-release/minor" || branch == "semantic-release/major"){
+					    
+					    def release = "v${APP_VERSION}-${AMBIENTE}"
 					
                     	sh "mvn versions:set -DnewVersion=${APP_VERSION}"
                     	
@@ -518,6 +521,9 @@ EOF
 	                        """
 	                    }
                     }else{
+                        
+                        def release = "v${APP_VERSION}"
+                        
                     	// Credentials
 	                    withCredentials([usernamePassword(credentialsId: 'mponce-apiservice', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
 	                        sh label: "", 
