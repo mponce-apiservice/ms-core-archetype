@@ -609,7 +609,7 @@ EOF
                         echo " --> Remove Images none..."
                     	sh "docker rmi ${REMOVEIMAGES_NONE}"
                     }
-                    def REMOVEIMAGES_OLD = sh(script:"docker images | grep " [hour|days|months|weeks]* ago" | awk '{print \$3}'", returnStdout: true).trim()
+                    def REMOVEIMAGES_OLD = sh(script:"docker images | grep ' [hour|days|months|weeks]* ago' | awk '{print \$3}'", returnStdout: true).trim()
                     if (REMOVEIMAGES_OLD != ""){
                         echo " --> Remove Images old..."
                     	sh "docker rmi ${REMOVEIMAGES_OLD}"
