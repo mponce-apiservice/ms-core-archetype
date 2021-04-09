@@ -605,11 +605,13 @@ EOF
                 script {
                     echo " ==> Cleanup..."
                     def REMOVEIMAGES_NONE = sh(script:"docker images | grep none | awk '{print \$3}'", returnStdout: true).trim()
+                    echo ${REMOVEIMAGES_NONE}
                     if (REMOVEIMAGES_NONE != ""){
                         echo " --> Remove Images none..."
                     	sh "docker rmi -f ${REMOVEIMAGES_NONE}"
                     }
                     def REMOVEIMAGES_OLD = sh(script:"docker images | grep ' [hours|days|months|weeks]* ago' | awk '{print \$3}'", returnStdout: true).trim()
+                    echo ${REMOVEIMAGES_OLD}
                     if (REMOVEIMAGES_OLD != ""){
                         echo " --> Remove Images old..."
                     	sh "docker rmi -f ${REMOVEIMAGES_OLD}"
