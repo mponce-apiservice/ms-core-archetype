@@ -607,12 +607,12 @@ EOF
                     def REMOVEIMAGES_NONE = sh(script:"docker images | grep none | awk '{print \$3}'", returnStdout: true).trim()
                     if (REMOVEIMAGES_NONE != ""){
                         echo " --> Remove Images none..."
-                    	sh "docker rmi ${REMOVEIMAGES_NONE}"
+                    	sh "docker rmi -f ${REMOVEIMAGES_NONE}"
                     }
                     def REMOVEIMAGES_OLD = sh(script:"docker images | grep ' [hour|days|months|weeks]* ago' | awk '{print \$3}'", returnStdout: true).trim()
                     if (REMOVEIMAGES_OLD != ""){
                         echo " --> Remove Images old..."
-                    	sh "docker rmi ${REMOVEIMAGES_OLD}"
+                    	sh "docker rmi -f ${REMOVEIMAGES_OLD}"
                     }
                 }
                 step([$class: 'WsCleanup'])
