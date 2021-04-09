@@ -120,7 +120,7 @@ spec:
             }
             steps {
                 script {
-                    
+                    sh "docker images"
                     echo "Maven build..."
                     sh 'rm -rf infrastructure/src/main/resources/META-INF/microprofile-config.properties'
                     sh 'cp infrastructure/src/main/resources/META-INF/microprofile-config-test.properties infrastructure/src/main/resources/META-INF/microprofile-config.properties'
