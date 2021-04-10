@@ -120,26 +120,6 @@ spec:
             }
             steps {
                 script {
-                    sh "docker images"
-                    
-                    echo " ==> Cleanup..."
-                    sh label: "", 
-                    script: """
-                        #!/bin/bash
-                        
-                        REMOVEIMAGES_NONE=\$(docker images | grep none | awk '{print \$3}')
-                        echo \$REMOVEIMAGES_NONE
-                        if [ "\$REMOVEIMAGES_NONE" != "" ]; then
-                        docker rmi -f \$REMOVEIMAGES_NONE        
-                        fi
-                        
-                        REMOVEIMAGES_OLD=\$(docker images | grep ' [hours|days|months|weeks]* ago' | awk '{print \$3}')
-                        echo \$REMOVEIMAGES_OLD
-                        if [ "\$REMOVEIMAGES_OLD" != "" ]; then
-                        docker rmi -f \$REMOVEIMAGES_OLD        
-                        fi
-                        
-                    """
                     
                     echo "Maven build..."
                     sh 'rm -rf infrastructure/src/main/resources/META-INF/microprofile-config.properties'
@@ -624,36 +604,25 @@ EOF
                 // Clean Up
                 script {
                     echo " ==> Cleanup..."
+
                     sh label: "", 
                     script: """
                         #!/bin/bash
                         
-                        REMOVEIMAGES_NONE=`docker images | grep none | awk '{print \$3}'`
-                        echo $REMOVEIMAGES_NONE
-                        if [ "$REMOVEIMAGES_NONE" != "" ]; then
-                        docker rmi -f $REMOVEIMAGES_NONE        
+                        REMOVEIMAGES_NONE=\$(docker images | grep none | awk '{print \$3}')
+                        if [ "\$REMOVEIMAGES_NONE" != "" ]; then
+                        echo " --> Remove Images none..."
+                        docker rmi -f \$REMOVEIMAGES_NONE        
                         fi
                         
-                        REMOVEIMAGES_OLD=`docker images | grep ' [hours|days|months|weeks]* ago' | awk '{print \$3}'`
-                        echo $REMOVEIMAGES_OLD
-                        if [ "$REMOVEIMAGES_OLD" != "" ]; then
-                        docker rmi -f $REMOVEIMAGES_OLD        
+                        REMOVEIMAGES_OLD=\$(docker images | grep ' [hours|days|months|weeks]* ago' | awk '{print \$3}')
+                        if [ "\$REMOVEIMAGES_OLD" != "" ]; then
+                        echo " --> Remove Images old..."
+                        docker rmi -f \$REMOVEIMAGES_OLD        
                         fi
                         
                     """
                     
-                    /*def REMOVEIMAGES_NONE = sh(script:"docker images | grep none | awk '{print \$3}'", returnStdout: true).trim()
-                    echo "images none: ${REMOVEIMAGES_NONE}"
-                    if (REMOVEIMAGES_NONE != ""){
-                        echo " --> Remove Images none..."
-                    	sh "docker rmi -f ${REMOVEIMAGES_NONE}"
-                    }
-                    def REMOVEIMAGES_OLD = sh(script:"docker images | grep ' [hours|days|months|weeks]* ago' | awk '{print \$3}'", returnStdout: true).trim()
-                    echo "images old: ${REMOVEIMAGES_OLD}"
-                    if (REMOVEIMAGES_OLD != ""){
-                        echo " --> Remove Images old..."
-                    	sh "docker rmi -f ${REMOVEIMAGES_OLD}"
-                    }*/
                 }
                 step([$class: 'WsCleanup'])
             }
