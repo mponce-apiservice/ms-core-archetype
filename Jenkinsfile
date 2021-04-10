@@ -127,15 +127,13 @@ spec:
                     script: """
                         #!/bin/bash
                         
-                        set +xe
-                        
-                        REMOVEIMAGES_NONE=`docker images | grep none | awk '{print \$3}'`
+                        export REMOVEIMAGES_NONE=`docker images | grep none | awk '{print \$3}'`
                         echo $REMOVEIMAGES_NONE
                         if [ "$REMOVEIMAGES_NONE" != "" ]; then
                         docker rmi -f $REMOVEIMAGES_NONE        
                         fi
                         
-                        REMOVEIMAGES_OLD=`docker images | grep ' [hours|days|months|weeks]* ago' | awk '{print \$3}'`
+                        export REMOVEIMAGES_OLD=`docker images | grep ' [hours|days|months|weeks]* ago' | awk '{print \$3}'`
                         echo $REMOVEIMAGES_OLD
                         if [ "$REMOVEIMAGES_OLD" != "" ]; then
                         docker rmi -f $REMOVEIMAGES_OLD        
